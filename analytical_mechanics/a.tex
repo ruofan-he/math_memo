@@ -1,0 +1,215 @@
+\documentclass{jsarticle}
+\usepackage[dvipdfmx]{graphicx}
+\usepackage{amsmath,amssymb}
+\usepackage{here}
+\usepackage{listings}
+\usepackage{multirow}
+\usepackage{url}
+\usepackage{lscape}
+\usepackage{bm}
+\usepackage[top=10truemm,bottom=15truemm,left=25truemm,right=25truemm]{geometry}
+\usepackage{ascmac}
+\usepackage{braket}
+\newcommand{\mex}[2]{#1 \times 10^{#2}}
+\newcommand{\iex}[2]{$#1 \times 10^{#2}$}
+\newcommand{\mr}[1]{\mathrm{#1}}
+\newcommand{\arbvt}[2]{#1_{\mbox{\tiny #2}}}
+\newcommand{\arbv}[2]{#1_{\mbox{\scriptsize #2}}}
+\newcommand{\unit}[2]{#1\,[\mathrm{#2}]}
+\newcommand{\un}[1]{\,[\mathrm{#1}]}
+
+\renewcommand{\lstlistingname}{コード}
+\renewcommand{\thelstnumber}{\tt{\arabic{lstnumber}}}
+
+%\renewcommand{\sfdefault}{phv}
+
+%\renewcommand{\kanjifamilydefault}{\gtdefault}%和文用
+
+%%%%%%%%%%%%%%%%
+\renewcommand\floatpagefraction{.001}
+\makeatletter
+\setlength\@fpsep{\textheight}
+\newcommand*{\centerfloat}{%
+  \parindent \z@
+  \leftskip \z@ \@plus 1fil \@minus \textwidth
+  \rightskip\leftskip
+  \parfillskip \z@skip}
+\makeatother
+
+
+\makeatletter
+\renewenvironment{description}{%
+\list{}{%
+\labelwidth=\leftmargin
+\labelsep=1zw
+\advance \labelwidth by -\labelsep
+\let \makelabel=\descriptionlabel}}{\endlist}
+\renewcommand*\descriptionlabel[1]{\normalfont #1 \hfil}
+\makeatother
+%%%%%%%%%%%%%%%
+\begin{document}
+\title{解析力学メモ}
+\date{2020年}
+\maketitle
+
+
+なんか調和振動子に関する知見を得たいのでメモ
+\begin{gather*}
+  L = \frac{1}{2} m \dot{x}^2 - \frac{1}{2} k x^2 = L(x,\dot{x})\\
+  \frac{\partial L}{\partial x} = kx  \quad \text{and} \quad \frac{\partial L}{\partial \dot{x}} = m\dot{x} = p
+\end{gather*}
+ラグランジュの運動方程式では
+\begin{gather*}
+  \frac{\partial L}{\partial x} - \frac{\partial}{\partial t} \frac{\partial L }{\partial \dot{x}} = 0 
+\end{gather*}
+これは変数変換を行っても同じような形になるから、綺麗なのである。
+もはやどんな変数でも成り立つので一般化。
+\begin{gather*}
+  L = L(q_1,\dot{q}_1,\cdots,q_n,\dot{q}_n)\\[10pt]
+  \begin{aligned}
+    q_i &:= \mbox{一般化座標}\\
+    \dot{q}_i &:= \mbox{一般化速度}
+  \end{aligned}\\[10pt]
+  \frac{\partial L}{\partial q_i} - \frac{\partial}{\partial t} \frac{\partial L }{\partial \dot{q}_i} = 0 \\[10pt]
+  \begin{aligned}
+    p_i = \frac{\partial L }{\partial \dot{q}_i} &:= \mbox{一般化運動量}\\
+    \dot{p}_i = F_i = \frac{\partial L}{\partial q_i} &:= \mbox{一般化力}
+  \end{aligned}
+\end{gather*}
+EMANいわく一般化速度で時間微分が入っているのはめんどくさいなどの理由があるので、一般化運動量$p$を使った表現にしたいのである。
+それがハミルトン形式の理由なのかもしれない。(しらんがな)ラグランジアン$L$から$\dot{x}$を消して、$H$にする。
+\begin{gather*}
+  \begin{aligned}
+    H & = \sum_i p_i \dot{q}_i - L (q_1,\dot{q}_1,\cdots,q_n,\dot{q}_n)\\
+      & = H(q_1,p_1, \cdots , q_n, p_n)
+  \end{aligned}\\[10pt]
+  \begin{aligned}
+    p_i & = \frac{\partial H}{\partial \dot{q}_i}\\
+    \dot{p}_i & = - \frac{\partial H}{\partial q_i} = \frac{\partial L}{\partial q_i} \\
+    \dot{q}_i & = \frac{\partial H}{\partial p_i}
+  \end{aligned}
+\end{gather*}
+これがラグランジュの運動方程式に対する、ハミルトンの正準方程式という。(EMAN調べ)
+\begin{gather*}
+  \left.
+  \begin{gathered}
+    p_i\\
+    q_i
+  \end{gathered}
+  \right\} \text{正準変数}
+\end{gather*}
+
+\newpage
+ポアソン括弧なるものがある。$X$がなんらかの$p,q,t$の関数として、時間の全微分は次のようにかける。
+もちろん$p,q$は上のハミルトン形式に従って動く系を考えている。
+\begin{gather*}
+  X(q_1,p_1,\cdots, q_n,p_n, t)\\
+  \frac{d X}{d t} = \frac{\partial X}{\partial t}+\sum_{i} \left( \frac{\partial X}{\partial q_i}\frac{d q_i}{d t} + \frac{\partial X}{\partial p_i}\frac{d p_i}{d t} \right)
+\end{gather*}
+なんか$\dot{q}$とか$\dot{p}$が含まれているので、ハミルトンの正準方程式を代入したら綺麗になるかもね。
+\begin{align*}
+  \frac{d X}{d t} & = \frac{\partial X}{\partial t}+\sum_{i} \left( \frac{\partial X}{\partial q_i}\frac{\partial H}{\partial p_i} - \frac{\partial X}{\partial p_i}\frac{\partial H}{\partial q_i} \right)\\
+& = \frac{\partial X}{\partial t} +  \{  X, H \}
+\end{align*}
+ポアソン括弧とは$\{  X, H \}$である。
+仮に$X = q_i$として陽に時間をふくまずに書くと、
+\begin{align*}
+  X = q_i\\
+  \dot{q}_i = \{ q_i, H \}
+\end{align*}
+$X = p_i$でも同様で、
+\begin{align*}
+  X = p_i\\
+  \dot{p}_i = \{ p_i, H \}
+\end{align*}
+となる。量子力学のハイゼンベルク方程式でよく見た形式だなあ？
+ポアソン括弧は正準変数を用いてはじめて決まるものだが、じゃあ正準変数を代入するとどうなるか。
+\begin{align*}
+  \{q_i, q_j\} &= 0 \\
+  \{p_i, p_j\} &= 0 \\
+  \{q_i, p_j\} &= \delta_{ij} 
+\end{align*}
+最後のやつは正準交換関係と似てる。
+
+最初の話題にもどって調和振動子について考える。
+\begin{gather*}
+  L = \frac{1}{2} m \dot{x}^2 - \frac{1}{2} k x^2 = L(x,\dot{x})\\
+\end{gather*}
+これの正準変数(位置$x$と運動量$p$)について、ハイゼンベルクの神がかった直感によって、
+正準交換関係が導入された。
+\begin{gather*}
+  [x,p] = i \hbar 
+\end{gather*}
+はじめに上の交換関係を決めてしまえば、いかなる変数変換によって変化された正準変数$Q,P$についても
+この正準交換関係が成り立つ。
+\begin{gather*}
+  x = \alpha Q\\
+  L = \frac{1}{2} m \alpha ^2 \dot{Q} ^2 - \frac{1}{2} k \alpha ^2 Q^2
+\end{gather*}
+一般化運動量は
+\begin{gather*}
+  P = \frac{\partial L}{\partial \dot{Q}} = m \alpha ^2 \dot{Q}
+\end{gather*}
+なので$Q,P$の交換関係は
+\begin{gather*}
+  [Q,P] = [\frac{x}{\alpha} , \alpha m \dot{x}] = [x,p] = i \hbar
+\end{gather*}
+よって交換関係は変わらないことがわかった。
+調和振動子のハミルトニアンは
+\begin{gather*}
+  H = \frac{1}{2} m \dot{x}^2 + \frac{1}{2} k x^2 = L(x,\dot{x})
+\end{gather*}
+である。実際これはどうでもいいのだが、重要な直感は$x$とか$p$とかを別の演算子をもちいて
+かけないかということである。
+$x,p$は実数の演算子のため、エルミート演算子であることが保証されている。
+エルミートではない演算子によってこれを作れないかと誰かは考えた。
+\begin{gather*}
+  x = \alpha (a^\dagger + a)\\
+  p = i \beta (a^\dagger - a)
+\end{gather*}
+\begin{gather*}
+  [x,p] = i2\alpha \beta [a,a^\dagger]
+\end{gather*}
+生成消滅演算子として便利に使うためには$[a,a^\dagger]=1$であってほしいので、
+\begin{gather*}
+  2 \alpha \beta = \hbar
+\end{gather*}
+である。そうすれば、正準交換関係が満たされる$a,a^\dagger$を作ることができるだろう。
+\begin{gather*}
+  \alpha = \beta = \sqrt{\frac{\hbar}{2}}\\[10pt]
+  \begin{aligned}
+    \hat{x} = \sqrt{\frac{\hbar}{2}} \left( \hat{a}^\dagger + \hat{a}  \right)\\
+    \hat{p} = i \sqrt{\frac{\hbar}{2}} \left( \hat{a}^\dagger - \hat{a}  \right)
+  \end{aligned}
+\end{gather*}
+でもいいのだが、よくこうする。
+\begin{align*}
+  \hat{x}  &= \sqrt{\frac{\hbar}{2m\omega}} \left( \hat{a}^{\dagger}  + \hat{a} \right) \\
+  \hat{p}  &= i \sqrt{\frac{\hbar m\omega}{2}} \left( \hat{a}^{\dagger}  - \hat{a} \right)
+\end{align*}
+なぜなら
+\begin{align*}
+  H  & = -\frac{1}{2} \frac{1}{m} \beta^2 \left( a^\dagger - a \right)^2 
+      + \frac{1}{2} k \alpha^2 \left( a^\dagger + a \right)^2\\
+    & = -\frac{1}{2} \frac{1}{m} \beta^2 ( {a^\dagger}^2 + a^2 - a^\dagger a - a a^\dagger)
+     + \frac{1}{2} k \alpha^2 ( {a^\dagger}^2 + a^2 + a^\dagger a + a a^\dagger)
+\end{align*}
+これが綺麗な形にかけると嬉しいのでね。そのためには$a^2,{a^\dagger}^2$の項が消えないといけない。
+すなわち
+\begin{gather*}
+  \alpha \beta = \frac{\hbar}{2} \\ 
+  \frac{1}{m} \beta ^2 = k \alpha^2
+\end{gather*}
+では
+\begin{gather*}
+  \alpha = \sqrt{\frac{\hbar }{2c}} \qquad \beta = \sqrt{\frac{\hbar c}{2}}\\
+  \rightarrow c^2 = km \rightarrow c = \omega m\\
+  \alpha = \sqrt{\frac{\hbar}{2 m \omega}} \qquad \beta = \sqrt{\frac{\hbar m \omega}{2}}
+\end{gather*}
+こうすることでハミルトニアンが綺麗にかける。
+\begin{gather*}
+  H = \hbar \omega \left(a^\dagger a + \frac{1}{2} \right)
+\end{gather*}
+
+
+\end{document}
