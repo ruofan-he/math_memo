@@ -1,0 +1,153 @@
+\documentclass{jsarticle}
+\usepackage[dvipdfmx]{graphicx}
+\usepackage{amsmath,amssymb}
+\usepackage{here}
+\usepackage{listings}
+\usepackage{multirow}
+\usepackage{url}
+\usepackage{lscape}
+\usepackage[top=20truemm,bottom=25truemm,left=25truemm,right=25truemm]{geometry}
+\usepackage{ascmac}
+\newcommand{\mex}[2]{#1 \times 10^{#2}}
+\newcommand{\iex}[2]{$#1 \times 10^{#2}$}
+\newcommand{\mr}[1]{\mathrm{#1}}
+\newcommand{\arbvt}[2]{#1_{\mbox{\tiny #2}}}
+
+\renewcommand{\lstlistingname}{コード}
+\renewcommand{\thelstnumber}{\tt{\arabic{lstnumber}}}
+
+%\renewcommand{\sfdefault}{phv}
+
+%\renewcommand{\kanjifamilydefault}{\gtdefault}%和文用
+
+%%%%%%%%%%%%%%%%
+\renewcommand\floatpagefraction{.001}
+\makeatletter
+\setlength\@fpsep{\textheight}
+\newcommand*{\centerfloat}{%
+  \parindent \z@
+  \leftskip \z@ \@plus 1fil \@minus \textwidth
+  \rightskip\leftskip
+  \parfillskip \z@skip}
+\makeatother
+
+\makeatletter
+\renewenvironment{description}{%
+\list{}{%
+\labelwidth=\leftmargin
+\labelsep=1zw
+\advance \labelwidth by -\labelsep
+\let \makelabel=\descriptionlabel}}{\endlist}
+\renewcommand*\descriptionlabel[1]{\normalfont #1\hfil}
+\makeatother
+%%%%%%%%%%%%%%%
+\begin{document}
+
+\begin{align*}
+\left(
+\begin{array}{c}
+dx\\
+dy\\
+dz
+\end{array}
+\right)
+=&
+\left(
+\begin{array}{rrr}
+\sin{\theta} \cos{\phi}&r \cos{\theta} \cos{\phi}& -r \sin{\theta} \sin{\phi} \\
+\sin{\theta} \sin {\phi}&r \cos{\theta} \sin{\phi}&  r \sin{\theta} \cos{\phi} \\
+\cos{\theta} & -r \sin{\theta} & 0
+\end{array}
+\right)
+\left(
+\begin{array}{c}
+dr\\
+d\theta\\
+d\phi
+\end{array}
+\right)\\
+= &
+A
+\left(
+\begin{array}{c}
+dr\\
+d\theta\\
+d\phi
+\end{array}
+\right)
+\end{align*}
+
+\begin{align*}
+\left(
+\begin{array}{c}
+dr\\
+d\theta\\
+d\phi
+\end{array}
+\right)
+= &
+\left(
+\begin{array}{rrr}
+\sin \theta \cos \phi & \sin \theta \sin \phi & \cos \theta\\
+\frac{1}{r} \cos \theta \cos \phi & \frac{1}{r} \cos \theta \sin \phi & -\frac{1}{r} \sin \theta\\
+- \frac{1}{r} \frac{\sin \phi}{\sin \theta } & \frac{1}{r} \frac{\cos \phi}{\sin \theta} & 0
+\end{array}
+\right)
+\left(
+\begin{array}{c}
+dx\\
+dy\\
+dz
+\end{array}
+\right)\\
+= & 
+A^{-1}
+\left(
+\begin{array}{c}
+dx\\
+dy\\
+dz
+\end{array}
+\right)
+\end{align*}
+
+
+\begin{align*}
+\left(
+\begin{array}{c}
+\partial x\\
+\partial y\\
+\partial z
+\end{array}
+\right)
+= &
+\left(
+\begin{array}{rrr}
+\sin \theta \cos \phi & \frac{1}{r} \cos \theta \cos \phi & - \frac{1}{r} \frac{\sin \phi}{\sin \theta} \\[4pt]
+\sin \theta \sin \phi & \frac{1}{r} \cos \theta \sin \phi & \frac{1}{r} \frac{\cos \phi }{\sin \theta}\\[4pt]
+\cos \theta & - \frac{1}{r} \sin \theta & 0
+\end{array}
+\right)
+\left(
+\begin{array}{c}
+\partial r\\
+\partial \theta\\
+\partial \phi
+\end{array}
+\right)\\
+= & 
+(A^{-1})^\mr{T}
+\left(
+\begin{array}{c}
+\partial r\\
+\partial \theta\\
+\partial \phi
+\end{array}
+\right)
+\end{align*}
+
+
+
+
+
+\end{document}
